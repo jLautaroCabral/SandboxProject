@@ -522,7 +522,7 @@ MonoBehaviour:
   gridSize: {x: 36, y: 24}
   cellRadius: 0.4
   gridDebug: {fileID: 648185584}
-  cameraToDrawRay: {fileID: 577777391}
+  cameraToDrawRay: {fileID: 519420031}
   mask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -556,7 +556,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &996270075
 Transform:
   m_ObjectHideFlags: 0
@@ -1010,7 +1010,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1815270935
 MonoBehaviour:
   m_ObjectHideFlags: 0
