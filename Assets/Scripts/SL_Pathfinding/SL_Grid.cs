@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SL_Grid : MonoBehaviour
 {
-	public bool onlyDisplayPathGizmos;
+	public bool displayGridGizmos;
 	public Transform player;
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
@@ -15,9 +15,8 @@ public class SL_Grid : MonoBehaviour
 
     float nodeDiameter;
     int gridSizeX, gridSizeY;
-	public List<SL_Node> path;
 
-	private void Start()
+	private void Awake()
     {
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
@@ -85,42 +84,17 @@ public class SL_Grid : MonoBehaviour
 		return grid[x, y];
 	}
 
-	
-
 	void OnDrawGizmos()
 	{
 		Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
-		if(onlyDisplayPathGizmos)
-        {
-			if(path != null)
-            {
-				foreach(SL_Node n in path)
-                {
-					Gizmos.color = Color.black;
-					Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
-				}
-            }
-        }
-		else
-        {
-			if (grid != null)
+		if (grid != null && displayGridGizmos)
+		{
+			foreach (SL_Node n in grid)
 			{
-				SL_Node playerNode = NodeFromWorldPoint(player.position);
-				foreach (SL_Node n in grid)
-				{
-					Gizmos.color = (n.walkable) ? Color.white : Color.red;
-					if (playerNode == n)
-						Gizmos.color = Color.cyan;
-
-					if (path != null)
-						if (path.Contains(n))
-							Gizmos.color = Color.black;
-
-					Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
-				}
+				Gizmos.color = (n.walkable) ? Color.white : Color.red;
+				Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
 			}
 		}
-		
 	}
 }
