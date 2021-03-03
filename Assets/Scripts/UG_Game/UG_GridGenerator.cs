@@ -10,6 +10,8 @@ public class UG_GridGenerator : MonoBehaviour
     UG_TileMasterClass[,] gridOfTiles;
     [SerializeField] GameObject tilePrefab;
     public Vector2 gridDimensions;
+
+    public bool generateNoWalkeableTiles;
     private void Awake()
     {
         if (sharedInstance == null) sharedInstance = this;
@@ -31,10 +33,13 @@ public class UG_GridGenerator : MonoBehaviour
                 mostRecentTile.transform.SetParent(this.gameObject.transform);
                 mostRecentTile.name = "Tile " + mostRecentTile.GetComponent<UG_TileMasterClass>().getGridCoors().ToString();
                 
-                if(UnityEngine.Random.Range(1,10) > 8)
+                if(generateNoWalkeableTiles)
                 {
-                    mostRecentTile.GetComponent<UG_TileMasterClass>().setTileWalkeable(false);
-                    mostRecentTile.GetComponent<SpriteRenderer>().color = Color.cyan;
+                    if (UnityEngine.Random.Range(1, 10) > 8)
+                    {
+                        mostRecentTile.GetComponent<UG_TileMasterClass>().setTileWalkeable(false);
+                        mostRecentTile.GetComponent<SpriteRenderer>().color = Color.cyan;
+                    }
                 }
 
                 gridOfTiles[x, y] = mostRecentTile.GetComponent<UG_TileMasterClass>();
@@ -171,5 +176,18 @@ public class UG_GridGenerator : MonoBehaviour
         }
 
         return neighbours;
+    }
+
+    internal GameObject getTiles(Vector2 starPos, Vector2 endPos, bool v)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Vector3 center = new Vector3((gridDimensions.x - 1) / 2,(gridDimensions.y - 1) / 2, 0);
+        Vector3 dimensions = new Vector3(gridDimensions.x, gridDimensions.y, 1);
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireCube(center, dimensions);
     }
 }

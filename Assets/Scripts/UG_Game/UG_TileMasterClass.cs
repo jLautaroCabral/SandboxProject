@@ -35,13 +35,23 @@ public class UG_TileMasterClass : MonoBehaviour
     }
     public virtual void OnSelect()
     {
-        Debug.Log("Tile Master Class " + this.gameObject.transform.position);
-        this.GetComponent<SpriteRenderer>().color = Color.red;
+        //this.GetComponent<SpriteRenderer>().color = Color.red;
     }
     public virtual void OnDeselect()
     {
-        Debug.Log("Tile Master Class " + this.gameObject.transform.position);
-        this.GetComponent<SpriteRenderer>().color = Color.green;
+        if(walkeable)
+        {
+            if(Input.GetKey(KeyCode.T))
+            {
+                this.GetComponent<SpriteRenderer>().color = Color.yellow;
+            } else
+            {
+                this.GetComponent<SpriteRenderer>().color = new Color(0.3043479f, 1, 0);
+            }
+        } else
+        {
+            this.GetComponent<SpriteRenderer>().color = new Color(0.641f, 0.406f, 0.220f);
+        }
     }
     internal void setGridCoors(Vector2 coors)
     {
