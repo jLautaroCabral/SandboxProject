@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GUIManager : MonoBehaviour
+public class UG_GUIManager : MonoBehaviour
 {
-    public static GUIManager sharedInstance;
+    public static UG_GUIManager sharedInstance;
     public Texture2D blackBoxSemiTrans;
 
     private void Awake()

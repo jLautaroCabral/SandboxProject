@@ -11,9 +11,12 @@ public class SL_Unit : MonoBehaviour
 
     int targetIndex;
 
-    private void Start()
+    private void Update()
     {
-        SL_PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+        if(Input.GetMouseButtonUp(0))
+        {
+            SL_PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+        }
     }
 
     private void OnPathFound(Vector3[] newPath, bool pathSuccessful) 

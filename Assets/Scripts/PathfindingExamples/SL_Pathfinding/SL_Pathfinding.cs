@@ -63,15 +63,14 @@ public class SL_Pathfinding : MonoBehaviour
                         neighbour.parent = currentNode;
 
                         if (!openSet.Contains(neighbour))
-                        {
                             openSet.Add(neighbour);
-                        }
+                        else
+                            openSet.UpdateItem(neighbour);
+
                     }
                 }
             }
         }
-
-        
 
         yield return null;
 

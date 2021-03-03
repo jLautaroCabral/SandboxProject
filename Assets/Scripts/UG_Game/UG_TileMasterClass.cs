@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileMasterClass : MonoBehaviour
+public class UG_TileMasterClass : MonoBehaviour
 {
-    float gridX, gridY;
+    public float gridX, gridY;
 
     // Pathfinding
     bool walkeable = true;
     int gCost; // cost for moving from the start tile to this tile
     int hCost; // an estimate of the distance between this tile and the tile you want to get a path to
-    TileMasterClass parent; // used in the pathfinding to retrace steps and give the final path
+    UG_TileMasterClass parent; // used in the pathfinding to retrace steps and give the final path
 
     public int fCost
     {
@@ -63,12 +63,12 @@ public class TileMasterClass : MonoBehaviour
         walkeable = canWalk;
     }
 
-    public TileMasterClass getParent()
+    public UG_TileMasterClass getParent()
     {
         return parent;
     }
 
-    public void setParent(TileMasterClass val)
+    public void setParent(UG_TileMasterClass val)
     {
         parent = val;
     }

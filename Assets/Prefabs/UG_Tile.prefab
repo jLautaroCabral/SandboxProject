@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 8433015524377058021}
   - component: {fileID: 8433015524377058020}
   - component: {fileID: 8433015524377058019}
-  - component: {fileID: 5986286314406104908}
+  - component: {fileID: 352432513625887020}
   m_Layer: 0
-  m_Name: Tile (1)
+  m_Name: UG_Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,7 +109,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.022, y: 1.02}
   m_EdgeRadius: 0
---- !u!114 &5986286314406104908
+--- !u!114 &352432513625887020
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,3 +121,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f373c33fc94a5214fa7eec550665bffb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridX: 0
+  gridY: 0

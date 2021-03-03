@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class TestPathfinding : MonoBehaviour
+public class UG_TestPathfinding : MonoBehaviour
 {
     public List<Vector3> path;
     public int counter = 0;
@@ -29,17 +29,18 @@ public class TestPathfinding : MonoBehaviour
             moveAlognPath();
         }
     }
+
     private void getRandomPath()
     {
         if(Input.GetKeyDown(KeyCode.R))
         {
             resetCount();
             Debug.Log("Testing pathfinding");
-            float x1 = Random.Range(0, GridGenerator.sharedInstance.gridDimensions.x);
-            float x2 = Random.Range(0, GridGenerator.sharedInstance.gridDimensions.x);
-            float y1 = Random.Range(0, GridGenerator.sharedInstance.gridDimensions.y);
-            float y2 = Random.Range(0, GridGenerator.sharedInstance.gridDimensions.y);
-            path = Pathfinding.sharedInstance.getPath(this.transform.position, new Vector3((int)x2, (int)y2, 0));
+            float x1 = Random.Range(0, UG_GridGenerator.sharedInstance.gridDimensions.x);
+            float x2 = Random.Range(0, UG_GridGenerator.sharedInstance.gridDimensions.x);
+            float y1 = Random.Range(0, UG_GridGenerator.sharedInstance.gridDimensions.y);
+            float y2 = Random.Range(0, UG_GridGenerator.sharedInstance.gridDimensions.y);
+            path = UG_Pathfinding.sharedInstance.getPath(this.transform.position, new Vector3((int)x2, (int)y2, 0));
         }
     }
     private bool shouldWeMovedAlongPath()

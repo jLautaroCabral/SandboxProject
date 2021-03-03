@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectionManager : MonoBehaviour
+public class UG_SelectionManager : MonoBehaviour
 {
-    public static SelectionManager sharedInstance; // shaI
+    public static UG_SelectionManager sharedInstance; // shaI
 
     bool drawMultiSelectBox = false;
 
     [SerializeField] List<GameObject> currentlySelected;
-    [SerializeField] TileMasterClass[] objectsWithSuperClass; // Just for demostrateting how the super clas can access the classes that inherit it
+    [SerializeField] UG_TileMasterClass[] objectsWithSuperClass; // Just for demostrateting how the super clas can access the classes that inherit it
     GameObject firstTileSelected = null;
     GameObject lastTileSelected = null;
     private void Awake()
@@ -28,7 +28,7 @@ public class SelectionManager : MonoBehaviour
     {
         clearSelected();
         currentlySelected.Add(toSet);
-        toSet.GetComponent<TileMasterClass>().OnSelect();
+        toSet.GetComponent<UG_TileMasterClass>().OnSelect();
     }
 
     public void setSelected(List<GameObject> toSet, bool clearExisting)
@@ -40,7 +40,7 @@ public class SelectionManager : MonoBehaviour
         currentlySelected = toSet;
         foreach(GameObject obj in getSelected())
         {
-            obj.GetComponent<TileMasterClass>().OnSelect();
+            obj.GetComponent<UG_TileMasterClass>().OnSelect();
         }
     }
 
@@ -56,7 +56,7 @@ public class SelectionManager : MonoBehaviour
 
         foreach(GameObject obj in getSelected())
         {
-            obj.GetComponent<TileMasterClass>().OnDeselect();
+            obj.GetComponent<UG_TileMasterClass>().OnDeselect();
         }
         currentlySelected = new List<GameObject>();
     }
@@ -75,14 +75,14 @@ public class SelectionManager : MonoBehaviour
                     selectionRaycast(ref firstTileSelected);
                 } else if(firstTileSelected != null && lastTileSelected != null)
                 {
-                    Vector2 starCoors = firstTileSelected.GetComponent<TileMasterClass>().getGridCoors();
-                    Vector2 endCoors = lastTileSelected.GetComponent<TileMasterClass>().getGridCoors();
+                    Vector2 starCoors = firstTileSelected.GetComponent<UG_TileMasterClass>().getGridCoors();
+                    Vector2 endCoors = lastTileSelected.GetComponent<UG_TileMasterClass>().getGridCoors();
                     Debug.Log("Start " + starCoors);
                     Debug.Log("End " + endCoors);
 
                     if(firstTileSelected != null && lastTileSelected != null)
                     {
-                        List<GameObject> selectedTiles = GridGenerator.sharedInstance.getTiles(starCoors, endCoors);
+                        List<GameObject> selectedTiles = UG_GridGenerator.sharedInstance.getTiles(starCoors, endCoors);
                         setSelected(selectedTiles, true);
                         firstTileSelected = null;
                         lastTileSelected = null;
@@ -148,7 +148,7 @@ public class SelectionManager : MonoBehaviour
 
     private void findAllSuperClassExamples()
     {
-        objectsWithSuperClass = FindObjectsOfType<TileMasterClass>();
+        objectsWithSuperClass = FindObjectsOfType<UG_TileMasterClass>();
     }
 
     private void OnGUI()
@@ -191,7 +191,7 @@ public class SelectionManager : MonoBehaviour
                     posToDrawBox = new Rect(endScreenPos.x, Screen.height - startScreenPos.y, width, height);
             }
 
-            GUI.DrawTexture(posToDrawBox, GUIManager.sharedInstance.getBlackBoxSemiTrans());
+            GUI.DrawTexture(posToDrawBox, UG_GUIManager.sharedInstance.getBlackBoxSemiTrans());
         }
     }
 }
