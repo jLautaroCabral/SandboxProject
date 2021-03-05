@@ -12,6 +12,7 @@ public class UG_TileMasterClass : MonoBehaviour
     protected int gCost; // cost for moving from the start tile to this tile
     protected int hCost; // an estimate of the distance between this tile and the tile you want to get a path to
     UG_TileMasterClass parent; // used in the pathfinding to retrace steps and give the final path
+    public string type;
 
     public virtual int fCost
     {

@@ -14,7 +14,7 @@ public class UG_Pathfinding : MonoBehaviour
 
     public List<Vector3> getPath(Vector3 starPos, Vector3 endPos)
     {
-        UG_GridGenerator.sharedInstance.ClearCostOfTiles();
+       // UG_GridGenerator.sharedInstance.ClearCostOfTiles();
 
         Vector2 sPos = new Vector2((int)starPos.x, (int)starPos.y);
         Vector2 ePos = new Vector2((int)endPos.x, (int)endPos.y);

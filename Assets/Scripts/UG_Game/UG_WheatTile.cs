@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class UG_WheatTile : UG_TileMasterClass
 {
+    private void Awake()
+    {
+        type = "Wheat";
+    }
     public override int fCost
     {
         get

@@ -12,6 +12,7 @@ public class UG_GridGenerator : MonoBehaviour
     public Vector2 gridDimensions;
 
     public bool generateNoWalkeableTiles;
+    public bool loadingGrid = false;
     private void Awake()
     {
         if (sharedInstance == null) sharedInstance = this;
@@ -19,7 +20,20 @@ public class UG_GridGenerator : MonoBehaviour
     }
     private void Start()
     {
-        generateGrid();
+        if (!loadingGrid)
+            generateGrid();
+        else
+            UG_SaveGrid.sharedIntance.readGridFromFile();
+    }
+
+    public void setGrid(UG_TileMasterClass[,] newGrid)
+    {
+        gridOfTiles = newGrid;
+    }
+
+    public UG_TileMasterClass[,] getTiles()
+    {
+        return gridOfTiles;
     }
     private void generateGrid()
     {

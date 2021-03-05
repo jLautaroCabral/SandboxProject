@@ -32,6 +32,17 @@ public class UG_TileChangeManager : MonoBehaviour
         return selectedTile;
     }
 
+    public GameObject getTilesByType(string type)
+    {
+        foreach(GameObject obj in tilesWeCanUse)
+        {
+            UG_TileMasterClass tm = obj.GetComponent<UG_TileMasterClass>();
+            if(tm.type == type)
+                return obj;
+        }
+        return tilesWeCanUse[0];
+    }
+
     private void OnGUI()
     {
         if(UG_SelectionManager.sharedInstance.selectionMode == SelectionMode.tile)
