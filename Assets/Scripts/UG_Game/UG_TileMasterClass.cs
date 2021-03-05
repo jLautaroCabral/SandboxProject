@@ -9,11 +9,11 @@ public class UG_TileMasterClass : MonoBehaviour
 
     // Pathfinding
     bool walkeable = true;
-    int gCost; // cost for moving from the start tile to this tile
-    int hCost; // an estimate of the distance between this tile and the tile you want to get a path to
+    protected int gCost; // cost for moving from the start tile to this tile
+    protected int hCost; // an estimate of the distance between this tile and the tile you want to get a path to
     UG_TileMasterClass parent; // used in the pathfinding to retrace steps and give the final path
 
-    public int fCost
+    public virtual int fCost
     {
         get { return gCost + hCost; } // estimation of the total quote to destination if this tile is used
     }
@@ -39,6 +39,7 @@ public class UG_TileMasterClass : MonoBehaviour
     }
     public virtual void OnDeselect()
     {
+        /*
         if(walkeable)
         {
             if(Input.GetKey(KeyCode.T))
@@ -52,6 +53,7 @@ public class UG_TileMasterClass : MonoBehaviour
         {
             this.GetComponent<SpriteRenderer>().color = new Color(0.641f, 0.406f, 0.220f);
         }
+        */
     }
     internal void setGridCoors(Vector2 coors)
     {

@@ -18,7 +18,7 @@ public class UG_SelectionManager : MonoBehaviour
     public SelectionMode selectionMode;
     public GameObject buildingPlaceCursor;
 
-    bool drawMultiSelectBox = false;
+    [SerializeField]bool drawMultiSelectBox = false;
 
     [SerializeField] List<GameObject> currentlySelected;
 
@@ -36,7 +36,7 @@ public class UG_SelectionManager : MonoBehaviour
     {
         if(selectionMode == SelectionMode.tile)
         {
-            //Tiles_checkForMouseClick();
+            Tiles_checkForMouseClick();
         } else if(selectionMode == SelectionMode.creatingBuilding)
         {
             CreateBuildings_checkForMouseClick();
@@ -226,7 +226,55 @@ public class UG_SelectionManager : MonoBehaviour
 
     private void Tiles_checkForMouseClick()
     {
-        checkForLeftMouseClick();
+        if (Input.GetKey(KeyCode.LeftControl)) // Multiselect
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (firstTileSelected == null)
+                {
+                    selectionRaycast(ref firstTileSelected);
+                }
+                else if (firstTileSelected != null && lastTileSelected != null)
+                {
+                    Vector2 starCoors = firstTileSelected.GetComponent<UG_TileMasterClass>().getGridCoors();
+                    Vector2 endCoors = lastTileSelected.GetComponent<UG_TileMasterClass>().getGridCoors();
+
+                    if (firstTileSelected != null && lastTileSelected != null)
+                    {
+                        List<GameObject> selectedTiles = UG_GridGenerator.sharedInstance.getTiles(starCoors, endCoors);
+                        setSelected(selectedTiles, true);
+
+                        replaceTiles();
+
+                        firstTileSelected = null;
+                        lastTileSelected = null;
+                    }
+                }
+            }
+
+            if (!Input.GetMouseButton(0) && firstTileSelected != null)
+            {
+                Debug.Log("Selecting second title");
+                drawMultiSelectBox = true;
+                selectionRaycast(ref lastTileSelected);
+            }
+            else
+            {
+                drawMultiSelectBox = false;
+            }
+
+        }
+        else if (Input.GetMouseButtonDown(0)) // Individual select
+        {
+            firstTileSelected = null;
+            lastTileSelected = null;
+            selectionRaycast();
+            replaceTiles();
+        }
+        else
+        {
+            drawMultiSelectBox = false;
+        }
     }
 
     public void setSelected(GameObject toSet) // setter for selected obj
@@ -266,57 +314,12 @@ public class UG_SelectionManager : MonoBehaviour
         currentlySelected = new List<GameObject>();
     }
 
-    private void checkForLeftMouseClick()
+    void replaceTiles()
     {
-        if (Input.GetKey(KeyCode.LeftControl))
+        if(UG_TileChangeManager.sharedInstance.getSelectedTile() != null)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Debug.Log("Multiselect");
-                if (firstTileSelected == null)
-                {
-                    Debug.Log("Selecting first tile");
-                    selectionRaycast(ref firstTileSelected);
-                }
-                else if (firstTileSelected != null && lastTileSelected != null)
-                {
-                    Vector2 starCoors = firstTileSelected.GetComponent<UG_TileMasterClass>().getGridCoors();
-                    Vector2 endCoors = lastTileSelected.GetComponent<UG_TileMasterClass>().getGridCoors();
-                    Debug.Log("Start " + starCoors);
-                    Debug.Log("End " + endCoors);
-
-                    if (firstTileSelected != null && lastTileSelected != null)
-                    {
-                        List<GameObject> selectedTiles = UG_GridGenerator.sharedInstance.getTiles(starCoors, endCoors);
-                        setSelected(selectedTiles, true);
-                        firstTileSelected = null;
-                        lastTileSelected = null;
-                    }
-                }
-            }
-
-            if (!Input.GetMouseButton(0) && firstTileSelected != null)
-            {
-                Debug.Log("Selecting second title");
-                drawMultiSelectBox = true;
-                selectionRaycast(ref lastTileSelected);
-            }
-            else
-            {
-                drawMultiSelectBox = false;
-            }
-
-        }
-        else if (Input.GetMouseButtonDown(0))
-        {
-            firstTileSelected = null;
-            lastTileSelected = null;
-            Debug.Log("Clicking, looking for raycast hits");
-            selectionRaycast();
-        }
-        else
-        {
-            drawMultiSelectBox = false;
+            UG_GridGenerator.sharedInstance.ChangeTilesInGrid(currentlySelected);
+            clearSelected();
         }
     }
 

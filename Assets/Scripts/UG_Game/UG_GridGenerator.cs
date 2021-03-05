@@ -88,6 +88,40 @@ public class UG_GridGenerator : MonoBehaviour
         return retVal;
     }
 
+    public void ChangeTilesInGrid(List<GameObject> selectedTiles)
+    {
+        foreach(GameObject obj in selectedTiles)
+        {
+            UG_TileMasterClass tm = obj.GetComponent<UG_TileMasterClass>();
+            Vector2 gridCoors = tm.getGridCoors();
+            int x = (int)gridCoors.x;
+            int y = (int)gridCoors.y;
+            bool walkeable = tm.isTileWalkeable();
+
+            GameObject oldTile = gridOfTiles[x, y].gameObject;
+            Destroy(oldTile);
+
+            Vector3 posToCreateTile = new Vector3(x, y, 0);
+            GameObject mostRecenTile = (GameObject)Instantiate(UG_TileChangeManager.sharedInstance.getSelectedTile(), posToCreateTile, Quaternion.identity);
+            mostRecenTile.GetComponent<UG_TileMasterClass>().setGridCoors(new Vector2(x, y));
+            mostRecenTile.transform.parent = this.gameObject.transform;
+
+            mostRecenTile.GetComponent<UG_TileMasterClass>().setTileWalkeable(walkeable);
+
+            gridOfTiles[x, y] = mostRecenTile.GetComponent<UG_TileMasterClass>();
+            mostRecenTile.SetActive(true);
+            mostRecenTile.name = "New Tile " + x + " " + y; 
+        }
+    }
+
+    public void ClearCostOfTiles()
+    {
+        foreach(UG_TileMasterClass tile in gridOfTiles)
+        {
+            tile.setG(0);
+            tile.setH(0);
+        }
+    }
     internal IEnumerable<UG_TileMasterClass> getTileNeighbors(UG_TileMasterClass tile)
     {
         /*

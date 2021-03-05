@@ -33,7 +33,7 @@ public class UG_BuildingStore : MonoBehaviour
                 try
                 {
                     UG_Building buildScript = obj.GetComponent<UG_Building>();
-                    Rect pos = new Rect(50, 50 + (50 + yMod), 100, 50);
+                    Rect pos = new Rect(50, 50 + (50 * yMod), 100, 50);
                     if(GUI.Button(pos, buildScript.name))
                     {
                         selectedBuilding = obj;

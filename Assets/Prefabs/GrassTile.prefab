@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 8433015524377058021}
   - component: {fileID: 8433015524377058020}
   - component: {fileID: 8433015524377058019}
-  - component: {fileID: 352432513625887020}
+  - component: {fileID: 668065875502469668}
   m_Layer: 0
-  m_Name: UG_Tile
+  m_Name: GrassTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,12 +72,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0210ea0d7501313428938f8012b4066e, type: 3}
-  m_Color: {r: 0.30434787, g: 1, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 6fcfcaf3b1e1e10499e89458ee191d7a, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.511, y: 0.51}
+  m_Size: {x: 5.11, y: 5.1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -100,8 +100,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.022, y: 1.02}
-    newSize: {x: 0.511, y: 0.51}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 5.11, y: 5.1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -109,7 +109,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.022, y: 1.02}
   m_EdgeRadius: 0
---- !u!114 &352432513625887020
+--- !u!114 &668065875502469668
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -14,6 +14,8 @@ public class UG_Pathfinding : MonoBehaviour
 
     public List<Vector3> getPath(Vector3 starPos, Vector3 endPos)
     {
+        UG_GridGenerator.sharedInstance.ClearCostOfTiles();
+
         Vector2 sPos = new Vector2((int)starPos.x, (int)starPos.y);
         Vector2 ePos = new Vector2((int)endPos.x, (int)endPos.y);
         UG_TileMasterClass startNode = UG_GridGenerator.sharedInstance.getTile((int)sPos.x, (int)sPos.y);
@@ -41,17 +43,17 @@ public class UG_Pathfinding : MonoBehaviour
         while(openSet.Count > 0)
         {
             UG_TileMasterClass node = openSet[0];
-            /*
-            for(int i = 0; i < openSet.Count; i++)
+            
+            for(int i = 1; i < openSet.Count; i++)
             {
-                if(openSet[i].fCost > node.fCost || openSet[i].fCost == node.fCost)
+                if(openSet[i].fCost < node.fCost || openSet[i].fCost == node.fCost)
                 {
                     if(openSet[i].getH() < node.getH())
                     {  
                         node = openSet[i];
                     }
                 }
-            }*/
+            }
 
             openSet.Remove(node);
             closetSet.Add(node);
@@ -77,7 +79,6 @@ public class UG_Pathfinding : MonoBehaviour
 
                     if(!openSet.Contains(neighbour))
                         openSet.Add(neighbour);
-
                 }
             }
         }
