@@ -63,7 +63,13 @@ public class UG_GridGenerator : MonoBehaviour
 
     internal UG_TileMasterClass getTile(int x, int y)
     {
-        return gridOfTiles[x,y];
+        try
+        {
+            return gridOfTiles[x, y];
+        } catch
+        {
+            return null;
+        }
     }
 
     public List<GameObject> getTiles(Vector2 starPos, Vector2 endPos)

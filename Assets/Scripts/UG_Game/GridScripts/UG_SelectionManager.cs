@@ -40,6 +40,9 @@ public class UG_SelectionManager : MonoBehaviour
         } else if(selectionMode == SelectionMode.creatingBuilding)
         {
             CreateBuildings_checkForMouseClick();
+        } else if(selectionMode == SelectionMode.unit)
+        {
+            Unit_checkForMouseClick();
         }
         shouldWeDisplayBuildingConstrucCursor();
     }
@@ -277,6 +280,29 @@ public class UG_SelectionManager : MonoBehaviour
         }
     }
 
+    void Unit_checkForMouseClick()
+    {
+        if(Input.GetMouseButtonDown(0)) {
+            Vector2 mousePos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+
+            RaycastHit2D raycast = Physics2D.Raycast(mousePos, Vector2.zero, 0f);
+
+            try
+            {
+                GameObject hitObj = raycast.collider.gameObject;
+                
+                if(hitObj.tag == "Unit")
+                {
+                    Debug.Log(hitObj.name);
+                    setSelected(hitObj);
+                }
+
+            } catch
+            {
+                Debug.Log("No valid object selected");
+            }
+        }
+    }
     public void setSelected(GameObject toSet) // setter for selected obj
     {
         clearSelected();
