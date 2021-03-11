@@ -6,7 +6,7 @@ public class UG_Action : MonoBehaviour
 {
     // Start is called before the first frame update
     public bool actionStarted = false;
-
+    public bool multiPartAction = false;
     public virtual void initaliseLocation(Vector3 location) { }
     public virtual void initaliseTarget(GameObject target) { }
     public virtual void initaliseTile(UG_TileMasterClass tm) { }
@@ -17,5 +17,5 @@ public class UG_Action : MonoBehaviour
     public virtual void doAction(GameObject me, UG_TileMasterClass tile) { }
     public virtual void onActionComplete() { }
     public virtual bool getIsActionComplete() { return false; }
-
+    public virtual string getActionType() { return "Default"; }
 }

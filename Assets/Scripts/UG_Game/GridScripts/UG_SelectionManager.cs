@@ -25,6 +25,9 @@ public class UG_SelectionManager : MonoBehaviour
     GameObject firstTileSelected = null;
     GameObject lastTileSelected = null;
 
+    [HideInInspector]public Vector3 startPosition, startWorld;
+    [HideInInspector]public Vector3 endPosition, endWorld;
+
     private void Awake()
     {
         if (sharedInstance == null) sharedInstance = this;
@@ -282,26 +285,54 @@ public class UG_SelectionManager : MonoBehaviour
 
     void Unit_checkForMouseClick()
     {
-        if(Input.GetMouseButtonDown(0)) {
-            Vector2 mousePos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-
-            RaycastHit2D raycast = Physics2D.Raycast(mousePos, Vector2.zero, 0f);
-
-            try
+        if(Input.GetKey(KeyCode.LeftControl) == false)
+        {
+            if (Input.GetMouseButtonDown(0))
             {
-                GameObject hitObj = raycast.collider.gameObject;
-                
-                if(hitObj.tag == "Unit")
+                Vector2 mousePos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+                RaycastHit2D raycast = Physics2D.Raycast(mousePos, Vector2.zero, 0f);
+
+                try
                 {
-                    Debug.Log(hitObj.name);
-                    setSelected(hitObj);
-                }
+                    GameObject hitObj = raycast.collider.gameObject;
+                    if (hitObj.tag == "Unit")
+                    {
+                        Debug.Log(hitObj.name);
+                        setSelected(hitObj);
+                    }
 
-            } catch
+                }
+                catch
+                {
+                    Debug.Log("No valid object selected");
+                }
+            }
+        } else
+        {
+            if(Input.GetMouseButtonDown(0))
             {
-                Debug.Log("No valid object selected");
+                startPosition = Input.mousePosition;
+                startWorld = Camera.main.ScreenToWorldPoint(startPosition);
+            }
+
+            if(Input.GetMouseButton(0))
+            {
+                drawMultiSelectBox = true;
+                endPosition = Input.mousePosition;
+                endWorld = Camera.main.ScreenToWorldPoint(endPosition);
+            }
+
+            if(Input.GetMouseButtonUp(0))
+            {
+                drawMultiSelectBox = false;
+                setSelected(UG_UnitManager.sharedInstance.getUnitsWithinArea(startWorld, endWorld), true);
+                startWorld = Vector3.zero;
+                endWorld = Vector3.zero;
+                endPosition = Vector3.zero;
+                startPosition = Vector3.zero;
             }
         }
+
     }
     public void setSelected(GameObject toSet) // setter for selected obj
     {
@@ -319,8 +350,11 @@ public class UG_SelectionManager : MonoBehaviour
         currentlySelected = toSet;
         foreach (GameObject obj in getSelected())
         {
-            obj.GetComponent<UG_TileMasterClass>().OnSelect();
-        }
+            if(obj.GetComponent<UG_TileMasterClass>())
+            {
+                obj.GetComponent<UG_TileMasterClass>().OnSelect();
+            }
+        } 
     }
 
     public List<GameObject> getSelected()
@@ -335,7 +369,10 @@ public class UG_SelectionManager : MonoBehaviour
 
         foreach (GameObject obj in getSelected())
         {
-            obj.GetComponent<UG_TileMasterClass>().OnDeselect();
+            if(obj.GetComponent<UG_TileMasterClass>())
+            {
+                obj.GetComponent<UG_TileMasterClass>().OnDeselect();
+            }
         }
         currentlySelected = new List<GameObject>();
     }
@@ -387,48 +424,78 @@ public class UG_SelectionManager : MonoBehaviour
 
     private void OnGUI()
     {
-        if (drawMultiSelectBox)
+        if (selectionMode == SelectionMode.tile)
         {
-            Vector3 startScreenPos = Camera.main.WorldToScreenPoint(firstTileSelected.transform.position);
-            Vector3 endScreenPos = Input.mousePosition;
+            if (drawMultiSelectBox)
+            {
+                Vector3 startScreenPos = Camera.main.WorldToScreenPoint(firstTileSelected.transform.position);
+                Vector3 endScreenPos = Input.mousePosition;
 
-            float width, height;
-            if (startScreenPos.x > endScreenPos.x)
-            {
-                width = startScreenPos.x - endScreenPos.x;
-            }
-            else
-            {
-                width = endScreenPos.x - startScreenPos.x;
-            }
-
-            if (startScreenPos.y > endScreenPos.y)
-            {
-                height = startScreenPos.y - endScreenPos.y;
-            }
-            else
-            {
-                height = endScreenPos.y - startScreenPos.y;
-            }
-
-            Rect posToDrawBox;
-
-            if (endScreenPos.x > startScreenPos.x)
-            {
-                if (endScreenPos.y > startScreenPos.y)
-                    posToDrawBox = new Rect(startScreenPos.x, Screen.height - endScreenPos.y, width, height);
+                float width, height;
+                if (startScreenPos.x > endScreenPos.x)
+                    width = startScreenPos.x - endScreenPos.x;
                 else
-                    posToDrawBox = new Rect(startScreenPos.x, Screen.height - startScreenPos.y, width, height);
-            }
-            else
-            {
-                if (endScreenPos.y > startScreenPos.y)
-                    posToDrawBox = new Rect(endScreenPos.x, Screen.height - endScreenPos.y, width, height);
-                else
-                    posToDrawBox = new Rect(endScreenPos.x, Screen.height - startScreenPos.y, width, height);
-            }
+                    width = endScreenPos.x - startScreenPos.x;
 
-            GUI.DrawTexture(posToDrawBox, UG_GUIManager.sharedInstance.getBlackBoxSemiTrans());
+                if (startScreenPos.y > endScreenPos.y)
+                    height = startScreenPos.y - endScreenPos.y;
+                else
+                    height = endScreenPos.y - startScreenPos.y;
+
+                Rect posToDrawBox;
+
+                if (endScreenPos.x > startScreenPos.x)
+                {
+                    if (endScreenPos.y > startScreenPos.y)
+                        posToDrawBox = new Rect(startScreenPos.x, Screen.height - endScreenPos.y, width, height);
+                    else
+                        posToDrawBox = new Rect(startScreenPos.x, Screen.height - startScreenPos.y, width, height);
+                }
+                else
+                {
+                    if (endScreenPos.y > startScreenPos.y)
+                        posToDrawBox = new Rect(endScreenPos.x, Screen.height - endScreenPos.y, width, height);
+                    else
+                        posToDrawBox = new Rect(endScreenPos.x, Screen.height - startScreenPos.y, width, height);
+                }
+                GUI.DrawTexture(posToDrawBox, UG_GUIManager.sharedInstance.getBlackBoxSemiTrans());
+            }
+        } else if (selectionMode == SelectionMode.unit)
+        {
+            if (drawMultiSelectBox)
+            {
+                Vector3 startScreenPos = startPosition;
+                Vector3 endScreenPos = Input.mousePosition;
+
+                float width, height;
+                if (startScreenPos.x > endScreenPos.x)
+                    width = startScreenPos.x - endScreenPos.x;
+                else
+                    width = endScreenPos.x - startScreenPos.x;
+
+                if (startScreenPos.y > endScreenPos.y)
+                    height = startScreenPos.y - endScreenPos.y;
+                else
+                    height = endScreenPos.y - startScreenPos.y;
+
+                Rect posToDrawBox;
+
+                if (endScreenPos.x > startScreenPos.x)
+                {
+                    if (endScreenPos.y > startScreenPos.y)
+                        posToDrawBox = new Rect(startScreenPos.x, Screen.height - endScreenPos.y, width, height);
+                    else
+                        posToDrawBox = new Rect(startScreenPos.x, Screen.height - startScreenPos.y, width, height);
+                }
+                else
+                {
+                    if (endScreenPos.y > startScreenPos.y)
+                        posToDrawBox = new Rect(endScreenPos.x, Screen.height - endScreenPos.y, width, height);
+                    else
+                        posToDrawBox = new Rect(endScreenPos.x, Screen.height - startScreenPos.y, width, height);
+                }
+                GUI.DrawTexture(posToDrawBox, UG_GUIManager.sharedInstance.getBlackBoxSemiTrans());
+            }
         }
     }
 

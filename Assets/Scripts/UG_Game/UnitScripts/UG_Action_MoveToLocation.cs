@@ -21,4 +21,9 @@ public class UG_Action_MoveToLocation : UG_Action
     {
         return Vector3.Distance(positionWeAreMovingTo, this.transform.position) < 2.0f;
     }
+
+    public override string getActionType()
+    {
+        return "Movement";
+    }
 }
