@@ -1,0 +1,147 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1150193115155654
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4510145985565354}
+  - component: {fileID: 114304920709629882}
+  - component: {fileID: 114669698174212178}
+  - component: {fileID: 114585104329892228}
+  - component: {fileID: 114235759699371794}
+  - component: {fileID: 114616261871386930}
+  - component: {fileID: 114946568078272668}
+  m_Layer: 0
+  m_Name: TownGeneratePrefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4510145985565354
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150193115155654}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 90.31011, y: 184.38452, z: -2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114304920709629882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150193115155654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1fa7acebae0044309f4483556720929, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabTile: {fileID: 1000013455341138, guid: 8e9f25a4f06124b4591109414e0e87be, type: 3}
+  grass: {fileID: 1171236619774034, guid: 04901a43f43444d36b0da9b0d7b57566, type: 3}
+  water: {fileID: 1176769048817764, guid: 2a8af043ea7e84f70a04fe4ef1eee9ce, type: 3}
+  mountain: {fileID: 1154137453852446, guid: faac72769e09b4ca9907c3598baf151b, type: 3}
+  forest: {fileID: 1704093748367994, guid: 8cf39ee994f0f4680a9314c756ecfa88, type: 3}
+  rockey: {fileID: 1154137453852446, guid: faac72769e09b4ca9907c3598baf151b, type: 3}
+  ocean: {fileID: 1235192265461090, guid: ab4d363099dbf4b5bae382567145b4fb, type: 3}
+  gridDimensions: {x: 100, y: 100}
+  loadingGrid: 0
+  blankGrid: 0
+--- !u!114 &114669698174212178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150193115155654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10410f6ba5a73479a9172a15082ac993, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  listOfNodes: []
+--- !u!114 &114585104329892228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150193115155654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff605e05bc2804e73a3b63b7a336f6e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  farm: {fileID: 1112264415212376, guid: d1b447e8105e845aaa6b15d8c95aba33, type: 3}
+  house: {fileID: 1380834224861002, guid: 72dda2245e5a24602a7b6d412f0cb73f, type: 3}
+  temple: {fileID: 1229572529207032, guid: 80935a0f41f4840509f2b5abf8cb7ab5, type: 3}
+  storehouse: {fileID: 1905251321711734, guid: 72e647f116ee747d6a8c6a36fdff7a14, type: 3}
+  barracks: {fileID: 1953038139130112, guid: 42b5f26865fa54cc691fbbf9c16d9892, type: 3}
+  wall: {fileID: 1755382283548188, guid: 5d000843eb8234ddb9b2ea12c9f1004a, type: 3}
+  palisade: {fileID: 1736673473132458, guid: 59f4232a78d19456a842a18897df4f3b, type: 3}
+  pavedTile: {fileID: 1000012055449840, guid: fcce10d5391dc411daa2dc6c15affe69, type: 3}
+  buildingsForTown: []
+  townCenterX: 0
+  townCenterY: 0
+  myType: 4
+  createMultipleTowns: 0
+  numberOfTowns: 4
+  connectionPoints: []
+--- !u!114 &114235759699371794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150193115155654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ad976b1516a24c058921390276c1c49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myBuildings: []
+  tilesFromThread: []
+--- !u!114 &114616261871386930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150193115155654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5a819b4156414ae2907261b80301a3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  food: []
+  wood: []
+  stone: []
+  iron: []
+  gold: []
+  acceptableDistance: 10
+--- !u!114 &114946568078272668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150193115155654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c92f43c6e9887481fa21c33acf70a4c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodeVisaliser: {fileID: 1462060349245394, guid: fe573c567155c49d09e92a3c19b84334,
+    type: 3}
+  savingsDisplay: 0

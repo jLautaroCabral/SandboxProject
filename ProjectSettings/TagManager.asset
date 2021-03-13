@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Unit
+  - Resource
+  - Building
+  - Tile
   layers:
   - Default
   - TransparentFX
