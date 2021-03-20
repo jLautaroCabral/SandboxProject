@@ -42,9 +42,6 @@ public class UnitMovement : MonoBehaviour {
 		if (areWeMoving == true) {
 			moveAlongPath ();
 		}
-
-
-
 	}
 
 	public Vector3 getFinalPosition()

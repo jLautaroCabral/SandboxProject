@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SL_Node : UG_IHeapItem<SL_Node>
+public class Node : IHeapItem<Node>
 {
     public bool walkable;
     public Vector3 worldPosition;
@@ -11,11 +11,11 @@ public class SL_Node : UG_IHeapItem<SL_Node>
     public int hCost;
     public int gridX;
     public int gridY;
-    public SL_Node parent;
+    public Node parent;
 
     int heapIndex;
 
-    public SL_Node(bool _walkeable, Vector3 _worldPosition, int _gridX, int _gridY)
+    public Node(bool _walkeable, Vector3 _worldPosition, int _gridX, int _gridY)
     {
         walkable = _walkeable;
         worldPosition = _worldPosition;
@@ -37,14 +37,13 @@ public class SL_Node : UG_IHeapItem<SL_Node>
         set { heapIndex = value; }
     }
 
-    public int CompareTo(SL_Node nodeToCompare)
+    public int CompareTo(Node nodeToCompare)
     {
         int compare = fCost.CompareTo(nodeToCompare.fCost);
 
-        if(compare == 0)
+        if (compare == 0)
             compare = hCost.CompareTo(nodeToCompare.hCost);
-        
+
         return -compare;
     }
 }
- 

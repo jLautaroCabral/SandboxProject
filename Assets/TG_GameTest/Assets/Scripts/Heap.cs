@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SL_Heap<T> where T : UG_IHeapItem<T>
+public class Heap<T> where T : IHeapItem<T>
 {
     T[] items;
     int currentItemCount;
@@ -16,9 +16,9 @@ public class SL_Heap<T> where T : UG_IHeapItem<T>
         }
     }
 
-    public SL_Heap(int maxHeapSize)
+    public Heap(int maxHeapSize)
     {
-        items = new T[maxHeapSize]; 
+        items = new T[maxHeapSize];
     }
 
     public void UpdateItem(T item)
@@ -51,26 +51,27 @@ public class SL_Heap<T> where T : UG_IHeapItem<T>
 
     void SortDown(T item)
     {
-        while(true)
+        while (true)
         {
             int childIndexLeft = item.HeapIndex * 2 + 1;
             int childIndexRight = item.HeapIndex * 2 + 2;
             int swapIndex = 0;
 
-            if(childIndexLeft < currentItemCount)
+            if (childIndexLeft < currentItemCount)
             {
                 swapIndex = childIndexLeft;
 
-                if(childIndexRight < currentItemCount)
-                    if(items[childIndexLeft].CompareTo(items[childIndexRight]) < 0)
+                if (childIndexRight < currentItemCount)
+                    if (items[childIndexLeft].CompareTo(items[childIndexRight]) < 0)
                         swapIndex = childIndexRight;
 
-                if(item.CompareTo(items[swapIndex]) < 0)
+                if (item.CompareTo(items[swapIndex]) < 0)
                     Swap(item, items[swapIndex]);
                 else
                     return;
 
-            } else
+            }
+            else
             {
                 return;
             }
@@ -81,10 +82,10 @@ public class SL_Heap<T> where T : UG_IHeapItem<T>
     {
         int parentIndex = (item.HeapIndex - 1) / 2;
 
-        while(true)
+        while (true)
         {
             T parentItem = items[parentIndex];
-            if(item.CompareTo(parentItem) > 0)
+            if (item.CompareTo(parentItem) > 0)
             {
                 Swap(item, parentItem);
             }
@@ -107,7 +108,7 @@ public class SL_Heap<T> where T : UG_IHeapItem<T>
     }
 }
 
-public interface UG_IHeapItem<T> : IComparable<T>
+public interface IHeapItem<T> : IComparable<T>
 {
     int HeapIndex
     {
