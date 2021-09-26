@@ -1,2 +1,2 @@
-# RTS_Game
-Estoy probando técnicas para el desarrollo de videojuegos en tiempo real. Lo último visto es flow field pathfingind y otro algoritmo de pathfinding particular
+# La Forja
+Este repositorio es mi caja de arena personal, aquí pruebo distintos scripts e ideas locas que luego pueden pasarse en limpio para otros videojuegos
