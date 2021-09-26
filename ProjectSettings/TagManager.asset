@@ -4,10 +4,21 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Unit
-  - Resource
-  - Building
-  - Tile
+  - playerArrow
+  - enemy
+  - enemyArrow
+  - ground
+  - hand
+  - Ground
+  - Body
+  - Glove
+  - gun
+  - barricade
+  - head
+  - body
+  - tank
+  - Bullet
+  - DeathArea
   layers:
   - Default
   - TransparentFX
@@ -17,9 +28,9 @@ TagManager:
   - UI
   - 
   - 
-  - Impassible
-  - RoughTerrain
-  - Unwalkeable
+  - Ignore
+  - 
+  - 
   - 
   - 
   - 
