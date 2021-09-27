@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace LC_Utils
 {
-    public static class UtilsClass
+    public static class LC_UtilsClass
     {
 
         private static readonly Vector3 Vector3zero = Vector3.zero;
@@ -87,19 +87,51 @@ namespace LC_Utils
         // Create Text Updater in UI
         public static FunctionUpdater CreateUITextUpdater(Func<string> GetTextFunc, Vector2 anchoredPosition)
         {
-            Text text = DrawTextUI(GetTextFunc(), anchoredPosition, 20, GetDefaultFont());
+            Text text = DrawTextUIAnchoredPos(GetTextFunc(), anchoredPosition, 20, GetDefaultFont());
             return FunctionUpdater.Create(() => {
                 text.text = GetTextFunc();
                 return false;
             }, "UITextUpdater");
         }
 
-        public static Text DrawTextUI(string textString, Vector2 anchoredPosition, int fontSize, Font font)
+        public static void CreateUITextPopup(string textString, Vector3 position)
         {
-            return DrawTextUI(textString, GetCanvasTransform(), anchoredPosition, fontSize, font);
+            CreateUITextPopup(textString, position, position + new Vector3(0, 20), Color.white);
+        }
+        
+        public static void CreateUITextPopup(string textString, Vector3 position, Vector3 finalPopupPosition, Color color, int fontSize = 40, float popupTime = 1f)
+        {
+            Text text = DrawTextUI(textString, position, fontSize, GetDefaultFont());
+            Transform transform = text.transform;
+            Vector3 moveAmount = (finalPopupPosition - position) / popupTime;
+
+            FunctionUpdater.Create(delegate () {
+                transform.position += moveAmount * Time.deltaTime;
+                popupTime -= Time.deltaTime;
+                if (popupTime <= 0f)
+
+                {
+                    UnityEngine.Object.Destroy(transform.gameObject);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }, "UITextPopup"); ;
         }
 
-        public static Text DrawTextUI(string textString, Transform parent, Vector2 anchoredPosition, int fontSize, Font font)
+        public static Text DrawTextUIAnchoredPos(string textString, Vector2 anchoredPosition, int fontSize, Font font)
+        {
+            return DrawTextUIWithAnchoredPos(textString, GetCanvasTransform(), anchoredPosition, fontSize, font);
+        }
+
+        public static Text DrawTextUI(string textString, Vector2 pos, int fontSize, Font font)
+        {
+            return DrawTextUI(textString, GetCanvasTransform(), pos, fontSize, font);
+        }
+
+        public static Text DrawTextUIWithAnchoredPos(string textString, Transform parent, Vector2 anchoredPosition, int fontSize, Font font)
         {
             GameObject textGo = new GameObject("Text", typeof(RectTransform), typeof(Text));
             textGo.transform.SetParent(parent, false);
@@ -124,6 +156,34 @@ namespace LC_Utils
             return text;
         }
 
+        public static Text DrawTextUI(string textString, Transform parent, Vector2 position, int fontSize, Font font)
+        {
+            GameObject textGo = new GameObject("Text", typeof(RectTransform), typeof(Text));
+            textGo.transform.SetParent(parent, false);
+            Transform textGoTrans = textGo.transform;
+            textGoTrans.SetParent(parent, false);
+            textGoTrans.localPosition = Vector3zero;
+            textGoTrans.localScale = Vector3one;
+
+            textGoTrans.position = new Vector3(position.x, position.y, 0);
+
+            RectTransform textGoRectTransform = textGo.GetComponent<RectTransform>();
+            textGoRectTransform.sizeDelta = new Vector2(0, 0);
+
+            Text text = textGo.GetComponent<Text>();
+            text.text = textString;
+            text.verticalOverflow = VerticalWrapMode.Overflow;
+            text.horizontalOverflow = HorizontalWrapMode.Overflow;
+            text.alignment = TextAnchor.MiddleLeft;
+            if (font == null) font = GetDefaultFont();
+            text.font = font;
+            text.fontSize = fontSize;
+
+            textGo.AddComponent<Outline>();
+
+            return text;
+        }
+
         // Get Default Unity Font, used in text objects if no font given
         public static Font GetDefaultFont()
         {
@@ -143,6 +203,12 @@ namespace LC_Utils
                 }
             }
             return cachedCanvasTransform;
+        }
+
+        // Get Mouse Position in pixel coordinates
+        public static Vector3 GetMousePosition()
+        {
+            return Input.mousePosition;
         }
 
         // Get Mouse Position in World with Z = 0f

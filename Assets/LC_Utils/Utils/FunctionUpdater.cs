@@ -58,19 +58,23 @@ namespace LC_Utils
             {
                 StopAllUpdatersWithName(functionName);
             }
-
             GameObject gameObject = new GameObject("FunctionUpdater Object " + functionName, typeof(MonoBehaviourHook));
-            FunctionUpdater functionUpdater = new FunctionUpdater(gameObject, updateFunc, functionName, active);
+
+            FunctionUpdater functionUpdater = gameObject.AddComponent<FunctionUpdater>();
+            functionUpdater.SetFuctionUpdaterData(gameObject, updateFunc, functionName, active);
+
             gameObject.GetComponent<MonoBehaviourHook>().OnUpdate = functionUpdater.Update;
 
             updaterList.Add(functionUpdater);
             return functionUpdater;
         }
+
         private static void RemoveUpdater(FunctionUpdater funcUpdater)
         {
             InitIfNeeded();
             updaterList.Remove(funcUpdater);
         }
+
         public static void DestroyUpdater(FunctionUpdater funcUpdater)
         {
             InitIfNeeded();
@@ -79,6 +83,7 @@ namespace LC_Utils
                 funcUpdater.DestroySelf();
             }
         }
+
         public static void StopUpdaterWithName(string functionName)
         {
             InitIfNeeded();
@@ -91,6 +96,7 @@ namespace LC_Utils
                 }
             }
         }
+
         public static void StopAllUpdatersWithName(string functionName)
         {
             InitIfNeeded();
@@ -113,13 +119,14 @@ namespace LC_Utils
         private bool active;
         private Func<bool> updateFunc; // Destroy Updater if return true;
 
-        public FunctionUpdater(GameObject gameObject, Func<bool> updateFunc, string functionName, bool active)
+        public void SetFuctionUpdaterData(GameObject gameObject, Func<bool> updateFunc, string functionName, bool active)
         {
             this.gameObject = gameObject;
             this.updateFunc = updateFunc;
             this.functionName = functionName;
             this.active = active;
         }
+
         public void Pause()
         {
             active = false;
