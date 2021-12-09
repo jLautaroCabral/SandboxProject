@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LC_Utils
+namespace LC.Utils
 {
     public class FunctionUpdater : MonoBehaviour
     {

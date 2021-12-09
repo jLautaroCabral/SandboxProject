@@ -2,33 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMovement : MonoBehaviour {
-	
-	// Update is called once per frame
-	void Update () {
-		moveCamera ();
-	}
-
-	void moveCamera()
+namespace EY_HospitalCreator
+{
+	public class CameraMovement : MonoBehaviour
 	{
-		Vector3 moveDir = Vector3.zero;
-
-		if (Input.GetKey (KeyCode.W)) {
-			moveDir += Vector3.up;
+		void Update()
+		{
+			moveCamera();
 		}
 
-		if (Input.GetKey (KeyCode.A)) {
-			moveDir += Vector3.left;
-		}
+		void moveCamera()
+		{
+			Vector3 moveDir = Vector3.zero;
 
-		if (Input.GetKey (KeyCode.S)) {
-			moveDir += Vector3.down;
-		}
+			if (Input.GetKey(KeyCode.W))
+			{
+				moveDir += Vector3.up;
+			}
 
-		if (Input.GetKey (KeyCode.D)) {
-			moveDir += Vector3.right;
-		}
+			if (Input.GetKey(KeyCode.A))
+			{
+				moveDir += Vector3.left;
+			}
 
-		transform.Translate (moveDir * 10.0f * Time.deltaTime);
+			if (Input.GetKey(KeyCode.S))
+			{
+				moveDir += Vector3.down;
+			}
+
+			if (Input.GetKey(KeyCode.D))
+			{
+				moveDir += Vector3.right;
+			}
+
+			transform.Translate(moveDir * 10.0f * Time.deltaTime);
+		}
 	}
 }
