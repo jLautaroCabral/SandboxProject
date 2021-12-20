@@ -16,8 +16,8 @@ public class DebugTest : MonoBehaviour
     {
         //LC_Debug.TextUpdaterUI(delegate () { return "Hello World!"; }, LC_UtilsClass.GetMousePosition());
 
-        if(Input.GetMouseButtonUp(0))
-            LC_Debug.UITextPopupMouse("Hello World!");
+        if (Input.GetMouseButtonUp(0))
+            LC_DebugFreeLookCamera.CreateSpectator();
 
 
         //Debug.Log("Input mouse pos: " + LC_UtilsClass.GetMousePosition());
