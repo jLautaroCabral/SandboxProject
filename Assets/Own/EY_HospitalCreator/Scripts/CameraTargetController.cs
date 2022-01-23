@@ -9,14 +9,18 @@ namespace EY_HospitalCreator
         public float speed = 200.0f;
         public Transform target;
 
+        [field: SerializeField]
+        private bool enableMovement;
+        public bool EnableMovement { get { return enableMovement; } }
+
+        [SerializeField]
+        private Vector3 Limit = new Vector3(30, 30, 30);
+
+        private Vector3 lastMovement;
         private Rigidbody rg;
         private bool move;
-        private string horizontal = "Horizontal";
-        private string vertical = "Vertical";
-        private Vector2 Limit = new Vector2(100, 100);
-        private Vector3 lastMovement;
-
-        private float limitY = 0.0f;
+        private readonly string horizontal = "Horizontal";
+        private readonly string vertical = "Vertical";
 
         private void Awake()
         {
@@ -27,37 +31,35 @@ namespace EY_HospitalCreator
         {
             move = false;
 
-            //float scroll = Input.GetAxis("Mouse ScrollWheel");
-            //Camera.main.fieldOfView -= scroll * 20;
-            //Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView, MinZoom, MaxZoom);
-
             Vector3 direction = target.position - transform.position;
             Quaternion rotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
             transform.rotation = rotation;
 
-            if (Mathf.Abs(Input.GetAxisRaw(horizontal)) > 0.5f || Mathf.Abs(Input.GetAxisRaw(vertical)) > 0.5)
+            if(EnableMovement)
             {
-                rg.velocity = Vector3.zero;
-                lastMovement = new Vector3(-Input.GetAxisRaw(horizontal), 0, -Input.GetAxisRaw(vertical));
-                rg.AddRelativeForce(lastMovement.normalized * speed * Time.deltaTime, ForceMode.VelocityChange);
-                move = true;
+                if (Mathf.Abs(Input.GetAxisRaw(horizontal)) > 0.5f || Mathf.Abs(Input.GetAxisRaw(vertical)) > 0.5)
+                {
+                    rg.velocity = Vector3.zero;
+                    lastMovement = new Vector3(-Input.GetAxisRaw(horizontal), 0, -Input.GetAxisRaw(vertical));
+                    rg.AddRelativeForce(lastMovement.normalized * speed * Time.deltaTime, ForceMode.VelocityChange);
+                    move = true;
+                }
+                CorregirPosicionSegunLimites();
             }
 
             if (!move)
             {
                 rg.velocity = Vector2.zero;
             }
-
-            //CorregirPosicionSegunLimites();
         }
 
         private void CorregirPosicionSegunLimites()
         {
             Vector3 pos = transform.position;
 
-            pos.x = Mathf.Clamp(pos.x, -Limit.x, Limit.x);
-            pos.y = Mathf.Clamp(pos.y, -limitY, limitY);
-            pos.z = Mathf.Clamp(pos.z, -Limit.y, Limit.y);
+            pos.x = Mathf.Clamp(pos.x, -Limit.x / 2, Limit.x / 2);
+            pos.y = Mathf.Clamp(pos.y, -Limit.y / 2, Limit.y / 2);
+            pos.z = Mathf.Clamp(pos.z, -Limit.y / 2, Limit.y / 2);
 
             transform.position = pos;
         }
@@ -65,6 +67,12 @@ namespace EY_HospitalCreator
         public void Quit()
         {
             Application.Quit();
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(Vector3.zero, Limit);
         }
     }
 }

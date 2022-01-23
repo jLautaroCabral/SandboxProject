@@ -1,5 +1,8 @@
-﻿using System;
+﻿using LC.Debug;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,198 +10,9 @@ namespace LC.Utils
 {
     public static class LC_Utils
     {
-
-        private static readonly Vector3 Vector3zero = Vector3.zero;
-        private static readonly Vector3 Vector3one = Vector3.one;
+        /*private static readonly Vector3 Vector3zero = Vector3.zero;
+        private static readonly Vector3 Vector3one = Vector3.one;*/
         public const int sortingOrderDefault = 5000;
-
-        // Create Text in the World
-        public static TextMesh CreateWorldText(string text, Transform parent = null, Vector3 localPosition = default(Vector3), int fontSize = 40, Color? color = null, TextAnchor textAnchor = TextAnchor.UpperLeft, TextAlignment textAlignment = TextAlignment.Left, int sortingOrder = sortingOrderDefault)
-        {
-            if (color == null) color = Color.white;
-            return CreateWorldText(parent, text, localPosition, fontSize, (Color)color, textAnchor, textAlignment, sortingOrder);
-        }
-
-        // Create Text in the World
-        public static TextMesh CreateWorldText(Transform parent, string text, Vector3 localPosition, int fontSize, Color color, TextAnchor textAnchor, TextAlignment textAlignment, int sortingOrder)
-        {
-            GameObject gameObject = new GameObject("World_Text", typeof(TextMesh));
-            Transform transform = gameObject.transform;
-
-            #region Custom conf - jLautaroCabral
-
-            transform.localScale = Vector3one * 0.1f;
-
-            #endregion Custom conf - jLautaroCabral
-
-
-            transform.SetParent(parent, false);
-            transform.localPosition = localPosition;
-
-            TextMesh textMesh = gameObject.GetComponent<TextMesh>();
-            textMesh.anchor = textAnchor;
-            textMesh.alignment = textAlignment;
-            textMesh.text = text;
-            textMesh.fontSize = fontSize;
-            textMesh.color = color;
-            textMesh.GetComponent<MeshRenderer>().sortingOrder = sortingOrder;
-
-            return textMesh;
-        }
-
-        // Creates a Text Mesh in the World and constantly updates it
-        public static FunctionUpdater CreateWorldTextUpdater(Func<string> GetTextFunc, Vector3 localPosition, Transform parent = null)
-        {
-            TextMesh textMesh = CreateWorldText(GetTextFunc(), parent, localPosition);
-            return FunctionUpdater.Create(() => {
-                textMesh.text = GetTextFunc();
-                return false;
-            }, "WorldTextUpdater");
-        }
-
-        // Create a Text Popup in the World, no parent
-        public static void CreateWorldTextPopup(string text, Vector3 localPosition)
-        {
-            CreateWorldTextPopup(null, text, localPosition, 40, Color.white, localPosition + new Vector3(0, 20), 1f);
-        }
-        // Create a Text Popup in the World, no parent
-        public static void CreateWorldTextPopup(string text, Vector3 localPosition, float popupTime)
-        {
-            CreateWorldTextPopup(null, text, localPosition, 40, Color.white, localPosition + new Vector3(0, 20), popupTime);
-        }
-        // Create a Text Popup in the World, no parent
-        public static void CreateWorldTextPopup(string text, Vector3 localPosition, Vector3 finalPos)
-        {
-            CreateWorldTextPopup(null, text, localPosition, 40, Color.white, localPosition + finalPos, 1f);
-        }
-
-        // Create a Text Popup in the World
-        public static void CreateWorldTextPopup(Transform parent, string text, Vector3 localPosition, int fontSize, Color color, Vector3 finalPopupPosition, float popupTime)
-        {
-            TextMesh textMesh = CreateWorldText(parent, text, localPosition, fontSize, color, TextAnchor.LowerLeft, TextAlignment.Left, sortingOrderDefault);
-            Transform transform = textMesh.transform;
-            Vector3 moveAmount = (finalPopupPosition - localPosition) / popupTime;
-            
-            FunctionUpdater.Create(delegate () {
-                transform.position += moveAmount * Time.deltaTime;
-                popupTime -= Time.deltaTime;
-                if (popupTime <= 0f)
-                {
-                    UnityEngine.Object.Destroy(transform.gameObject);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }, "WorldTextPopup");
-        }
-
-        // Create Text Updater in UI
-        public static FunctionUpdater CreateUITextUpdater(Func<string> GetTextFunc, Vector2 anchoredPosition)
-        {
-            Text text = DrawTextUIAnchoredPos(GetTextFunc(), anchoredPosition, 20, GetDefaultFont());
-            return FunctionUpdater.Create(() => {
-                text.text = GetTextFunc();
-                return false;
-            }, "UITextUpdater");
-        }
-
-        public static void CreateUITextPopup(string textString, Vector3 position)
-        {
-            CreateUITextPopup(textString, position, position + new Vector3(0, 20), Color.white);
-        }
-        
-        public static void CreateUITextPopup(string textString, Vector3 position, Vector3 finalPopupPosition, Color color, int fontSize = 40, float popupTime = 1f)
-        {
-            Text text = DrawTextUI(textString, position, fontSize, GetDefaultFont());
-            Transform transform = text.transform;
-            Vector3 moveAmount = (finalPopupPosition - position) / popupTime;
-
-            FunctionUpdater.Create(delegate () {
-                transform.position += moveAmount * Time.deltaTime;
-                popupTime -= Time.deltaTime;
-                if (popupTime <= 0f)
-
-                {
-                    UnityEngine.Object.Destroy(transform.gameObject);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }, "UITextPopup"); ;
-        }
-
-        public static Text DrawTextUIAnchoredPos(string textString, Vector2 anchoredPosition, int fontSize, Font font)
-        {
-            return DrawTextUIWithAnchoredPos(textString, GetCanvasTransform(), anchoredPosition, fontSize, font);
-        }
-
-        public static Text DrawTextUI(string textString, Vector2 pos, int fontSize, Font font)
-        {
-            return DrawTextUI(textString, GetCanvasTransform(), pos, fontSize, font);
-        }
-
-        public static Text DrawTextUIWithAnchoredPos(string textString, Transform parent, Vector2 anchoredPosition, int fontSize, Font font)
-        {
-            GameObject textGo = new GameObject("Text", typeof(RectTransform), typeof(Text));
-            textGo.transform.SetParent(parent, false);
-            Transform textGoTrans = textGo.transform;
-            textGoTrans.SetParent(parent, false);
-            textGoTrans.localPosition = Vector3zero;
-            textGoTrans.localScale = Vector3one;
-
-            RectTransform textGoRectTransform = textGo.GetComponent<RectTransform>();
-            textGoRectTransform.sizeDelta = new Vector2(0, 0);
-            textGoRectTransform.anchoredPosition = anchoredPosition;
-
-            Text text = textGo.GetComponent<Text>();
-            text.text = textString;
-            text.verticalOverflow = VerticalWrapMode.Overflow;
-            text.horizontalOverflow = HorizontalWrapMode.Overflow;
-            text.alignment = TextAnchor.MiddleLeft;
-            if (font == null) font = GetDefaultFont();
-            text.font = font;
-            text.fontSize = fontSize;
-
-            return text;
-        }
-
-        public static Text DrawTextUI(string textString, Transform parent, Vector2 position, int fontSize, Font font)
-        {
-            GameObject textGo = new GameObject("Text", typeof(RectTransform), typeof(Text));
-            textGo.transform.SetParent(parent, false);
-            Transform textGoTrans = textGo.transform;
-            textGoTrans.SetParent(parent, false);
-            textGoTrans.localPosition = Vector3zero;
-            textGoTrans.localScale = Vector3one;
-
-            textGoTrans.position = new Vector3(position.x, position.y, 0);
-
-            RectTransform textGoRectTransform = textGo.GetComponent<RectTransform>();
-            textGoRectTransform.sizeDelta = new Vector2(0, 0);
-
-            Text text = textGo.GetComponent<Text>();
-            text.text = textString;
-            text.verticalOverflow = VerticalWrapMode.Overflow;
-            text.horizontalOverflow = HorizontalWrapMode.Overflow;
-            text.alignment = TextAnchor.MiddleLeft;
-            if (font == null) font = GetDefaultFont();
-            text.font = font;
-            text.fontSize = fontSize;
-
-            textGo.AddComponent<Outline>();
-
-            return text;
-        }
-
-        // Get Default Unity Font, used in text objects if no font given
-        public static Font GetDefaultFont()
-        {
-            return Resources.GetBuiltinResource<Font>("Arial.ttf");
-        }
 
         // Get Main Canvas Transform
         private static Transform cachedCanvasTransform;
@@ -228,6 +42,7 @@ namespace LC.Utils
             vec.z = 0f;
             return vec;
         }
+        /*
         public static Vector3 GetMouseWorldPositionWithZ()
         {
             return GetMouseWorldPositionWithZ(Input.mousePosition, Camera.main);
@@ -236,6 +51,7 @@ namespace LC.Utils
         {
             return GetMouseWorldPositionWithZ(Input.mousePosition, worldCamera);
         }
+        */
         public static Vector3 GetMouseWorldPositionWithZ(Vector3 screenPosition, Camera worldCamera)
         {
             Vector3 worldPosition = worldCamera.ScreenToWorldPoint(screenPosition);
@@ -250,5 +66,226 @@ namespace LC.Utils
             else
                 return Vector3.zero;
         }
+
+        public static FunctionUpdater CreateKeyCodeAction(KeyCode keyCode, Action onKeyDown)
+        {
+            return FunctionUpdater.Create(() => {
+                if (Input.GetKeyDown(keyCode))
+                {
+                    onKeyDown();
+                }
+                return false;
+            });
+        }
+
+        public static Camera GetCurrentCamera()
+        {
+            foreach(Camera cam in Camera.allCameras)
+            {
+                if (cam == Camera.current)
+                    return cam;
+            }
+            return Camera.main;
+        }
+
+        public static GameObject GetDeafultEmptyObject()
+        {
+            return LC_DebugManager.sharedInstance.EmptyObject;
+        }
+        public static Font GetDefaultFont()
+        {
+            return LC_DebugManager.sharedInstance.Settings.DefaultFont;
+        }
+        public static Sprite GetDefaultSpriteSquare()
+        {
+            return LC_DebugManager.sharedInstance.Settings.DefaultButtonSprite;
+        }
+        public static Color GetDefaultButtonColor()
+        {
+            return LC_DebugManager.sharedInstance.Settings.DefaultButtonColor;
+        }
+        public static Color GetDefaultButtonColorOnClick()
+        {
+            return LC_DebugManager.sharedInstance.Settings.DefaultButtonColorOnClick;
+        }
+        public static Color GetDefaultButtonColorOnOver()
+        {
+            return LC_DebugManager.sharedInstance.Settings.DefaultButtonColorOnOver;
+        }
+        public static Vector3 GetDefaultButtonSize()
+        {
+            return LC_DebugManager.sharedInstance.Settings.DefaultButtonSize;
+        }
+        public static int GetDefaultFontSize()
+        {
+            return LC_DebugManager.sharedInstance.Settings.DefaultFontSize;
+        }
+        public static float GetDefaultButtonPanelOffset()
+        {
+            return LC_DebugManager.sharedInstance.Settings.DefaultButtonPanelOffset;
+        }
+        public static LC_DebuggerConfig GetSettings()
+        {
+            return LC_DebugManager.sharedInstance.Settings;
+        }
+
+        public static bool IsBuildForProduction()
+        {
+            return LC_DebugManager.sharedInstance.Settings.IsBuildForProduction;
+        }
+
+        /*
+        // Returns 00-FF, value 0->255
+        public static string Dec_to_Hex(int value)
+        {
+            return value.ToString("X2");
+        }
+
+        // Returns 0-255
+        public static int Hex_to_Dec(string hex)
+        {
+            return Convert.ToInt32(hex, 16);
+        }
+
+        // Returns a hex string based on a number between 0->1
+        public static string Dec01_to_Hex(float value)
+        {
+            return Dec_to_Hex((int)Mathf.Round(value * 255f));
+        }
+
+        // Returns a float between 0->1
+        public static float Hex_to_Dec01(string hex)
+        {
+            return Hex_to_Dec(hex) / 255f;
+        }
+
+        // Get Hex Color FF00FF
+        public static string GetStringFromColor(Color color)
+        {
+            string red = Dec01_to_Hex(color.r);
+            string green = Dec01_to_Hex(color.g);
+            string blue = Dec01_to_Hex(color.b);
+            return red + green + blue;
+        }
+
+        // Get Hex Color FF00FFAA
+        public static string GetStringFromColorWithAlpha(Color color)
+        {
+            string alpha = Dec01_to_Hex(color.a);
+            return GetStringFromColor(color) + alpha;
+        }
+
+        // Sets out values to Hex String 'FF'
+        public static void GetStringFromColor(Color color, out string red, out string green, out string blue, out string alpha)
+        {
+            red = Dec01_to_Hex(color.r);
+            green = Dec01_to_Hex(color.g);
+            blue = Dec01_to_Hex(color.b);
+            alpha = Dec01_to_Hex(color.a);
+        }
+
+        // Get Hex Color FF00FF
+        public static string GetStringFromColor(float r, float g, float b)
+        {
+            string red = Dec01_to_Hex(r);
+            string green = Dec01_to_Hex(g);
+            string blue = Dec01_to_Hex(b);
+            return red + green + blue;
+        }
+
+        // Get Hex Color FF00FFAA
+        public static string GetStringFromColor(float r, float g, float b, float a)
+        {
+            string alpha = Dec01_to_Hex(a);
+            return GetStringFromColor(r, g, b) + alpha;
+        }
+
+        // Get Color from Hex string FF00FFAA
+        public static Color GetColorFromString(string color)
+        {
+            float red = Hex_to_Dec01(color.Substring(0, 2));
+            float green = Hex_to_Dec01(color.Substring(2, 2));
+            float blue = Hex_to_Dec01(color.Substring(4, 2));
+            float alpha = 1f;
+            if (color.Length >= 8)
+            {
+                // Color string contains alpha
+                alpha = Hex_to_Dec01(color.Substring(6, 2));
+            }
+            return new Color(red, green, blue, alpha);
+        }
+        */
+
+        /*
+        // Draw a UI Sprite
+        public static RectTransform DrawSpriteUI(Color color, Transform parent, Vector2 pos, Vector2 size, string name = null)
+        {
+            RectTransform rectTransform = DrawSpriteUI(null, color, parent, pos, size, name);
+            return rectTransform;
+        }
+
+        // Draw a UI Sprite
+        public static RectTransform DrawSpriteUI(Sprite sprite, Transform parent, Vector2 pos, Vector2 size, string name = null)
+        {
+            RectTransform rectTransform = DrawSpriteUI(sprite, Color.white, parent, pos, size, name);
+            return rectTransform;
+        }
+
+        // Draw a UI Sprite
+        public static RectTransform DrawSpriteUI(Sprite sprite, Color color, Transform parent, Vector2 pos, Vector2 size, string name = null)
+        {
+            // Setup icon
+            if (name == null || name == "") name = "LC_UISprite";
+            GameObject go = new GameObject(name, typeof(RectTransform), typeof(Image));
+            RectTransform goRectTransform = go.GetComponent<RectTransform>();
+            goRectTransform.SetParent(parent, false);
+            goRectTransform.sizeDelta = size;
+            goRectTransform.anchoredPosition = pos;
+
+            Image image = go.GetComponent<Image>();
+            image.sprite = sprite;
+            image.color = color;
+
+            return goRectTransform;
+        }
+        */
+
+        /*
+        public static SpriteRenderer DrawSpriteWorld(Sprite sprite, Vector3 position, Vector3 scale, Color color)
+        {
+            GameObject spriteObj = new GameObject("LC_WorldSprite", typeof(SpriteRenderer));
+            SpriteRenderer spriteComponent = spriteObj.GetComponent<SpriteRenderer>();
+            return spriteComponent;
+        }
+        */
+        /*
+        public static Text DrawTextUI(string textString, Transform parent, Vector2 position, int fontSize, Font font)
+        {
+            GameObject textGo = new GameObject("Text", typeof(RectTransform), typeof(Text));
+            textGo.transform.SetParent(parent, false);
+            Transform textGoTrans = textGo.transform;
+            textGoTrans.SetParent(parent, false);
+            textGoTrans.localPosition = Vector3zero;
+            textGoTrans.localScale = Vector3one;
+
+            textGoTrans.position = new Vector3(position.x, position.y, 0);
+
+            RectTransform textGoRectTransform = textGo.GetComponent<RectTransform>();
+            textGoRectTransform.sizeDelta = new Vector2(0, 0);
+
+            Text text = textGo.GetComponent<Text>();
+            text.text = textString;
+            text.verticalOverflow = VerticalWrapMode.Overflow;
+            text.horizontalOverflow = HorizontalWrapMode.Overflow;
+            text.alignment = TextAnchor.MiddleLeft;
+            if (font == null) font = GetDefaultFont();
+            text.font = font;
+            text.fontSize = fontSize;
+
+            textGo.AddComponent<Outline>();
+
+            return text;
+        }
+        */
     }
 }

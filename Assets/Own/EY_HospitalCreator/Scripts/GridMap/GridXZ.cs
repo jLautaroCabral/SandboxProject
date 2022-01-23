@@ -1,4 +1,5 @@
-﻿using LC.Utils;
+﻿using LC.Debug;
+using LC.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace EY_HospitalCreator
                 {
                     for (int z = 0; z < gridArray.GetLength(1); z++)
                     {
-                        debugTextArray[x, z] = LC_Utils.CreateWorldText(gridArray[x, z]?.ToString(), null, GetWorldPosition(x, z) + new Vector3(cellSize, 0, cellSize) * .5f, 20, Color.red, TextAnchor.MiddleCenter);
+                        debugTextArray[x, z] = LC_Debug.CreateWorldText(gridArray[x, z]?.ToString(), null, GetWorldPosition(x, z) + new Vector3(cellSize, 0, cellSize) * .5f, 20, Color.red, TextAnchor.MiddleCenter).GetComponent<TextMesh>();
                         Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x, z + 1), Color.red, 100f);
                         Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x + 1, z), Color.red, 100f);
                     }

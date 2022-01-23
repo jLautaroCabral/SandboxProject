@@ -1,4 +1,5 @@
-﻿using LC.Utils;
+﻿using LC.Debug;
+using LC.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -75,7 +76,7 @@ namespace EY_HospitalCreator
 
                 } else
                 {
-                    LC_Utils.CreateWorldTextPopup("Cannot build here!!", LC_Utils.GetMouseWorldPosition_Ray(), new Vector3(0, 1f));
+                    LC_Debug.CreateWorldTextPopup("Cannot build here!!", LC_Utils.GetMouseWorldPosition_Ray(), new Vector3(0, 1f));
                 }
             }
 
